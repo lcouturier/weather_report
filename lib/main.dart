@@ -1,28 +1,32 @@
+import 'package:auto_route/auto_route.dart';
 import 'package:flutter/material.dart';
-import 'package:weather_report/core/data/weather_token.dart';
-import 'package:weather_report/core/dio_client.dart';
-import 'package:weather_report/presentation/widgets/core/extensions.dart';
+import 'package:weather_report/core/navigation/app_router.dart';
+
+import 'core/injection/injection.dart';
 
 void main() {
-  runApp(const MainApp());
+  getIt.registerSingleton<AppRouter>(AppRouter());
+  runApp(MainApp());
 }
 
 class MainApp extends StatelessWidget {
-  const MainApp({super.key});
+  MainApp({super.key});
+
+  final router = getIt<AppRouter>();
 
   @override
   Widget build(BuildContext context) {
-    final authValue = 'Basic ${'perso_couturier:0rF8SutAc1'.encodeBase64()}';
-
-    // final response = DioClient().get(
-    //     'https://api.meteomatics.com/2023-02-11T00:00:00Z--2023-02-14T00:00:00Z:PT1H/weather_symbol_24h:idx,t_2m:C/48.8249279,2.3980539/json');
-
-    return const MaterialApp(
-      home: Scaffold(
-        body: Center(
-          child: Text('Hello World!'),
-        ),
-      ),
+    return MaterialApp.router(
+      title: 'Weather Report',
+      routerDelegate: router.delegate(),
+      routeInformationParser: router.defaultRouteParser(),
+      builder: (context, child) {
+        final MediaQueryData data = MediaQuery.of(context);
+        return MediaQuery(
+          data: data.copyWith(textScaleFactor: 1.0),
+          child: child!,
+        );
+      },
     );
   }
 }

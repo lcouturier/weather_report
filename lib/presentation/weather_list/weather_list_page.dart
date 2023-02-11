@@ -10,6 +10,10 @@ class WeatherListPage extends StatefulWidget {
 class _WeatherListPageState extends State<WeatherListPage> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return const Scaffold(
+      body: Center(
+        child: Text('Hello World!'),
+      ),
+    );
   }
 }
