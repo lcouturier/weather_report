@@ -18,6 +18,7 @@ dependencies:
   dio: 4.0.6
   dio_cache_interceptor: 3.3.1
   darq: 1.2.1
+  json_annotation: 4.8.0
   
 
 dev_dependencies:
@@ -26,8 +27,8 @@ dev_dependencies:
   flutter_bloc: ^8.1.2
   flutter_lints: ^2.0.0
   freezed: ^2.3.2  
-  freezed_annotation: ^2.1.0
-  json_serializable: ^6.3.1
+  freezed_annotation: ^2.2.0
+  json_serializable: ^6.6.1
   retrofit_generator: ^4.0.3+1
 
 flutter:
