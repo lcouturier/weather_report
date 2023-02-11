@@ -1,1 +1,16 @@
 include: package:flutter_lints/flutter.yaml
+
+
+analyzer:
+  plugins:
+    - custom_lint
+  exclude:
+    - homemade_dependencies
+    - integration_test
+    - test
+    - '**.g.dart'
+    - '**.gr.dart'
+    - '**/*.freezed.dart'
+  strong-mode:
+    implicit-casts: true
+    implicit-dynamic: true
