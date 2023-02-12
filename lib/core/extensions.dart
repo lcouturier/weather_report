@@ -27,3 +27,17 @@ extension IntExtensions on int {
 
   bool inRange(List<int> items) => items.contains(this);
 }
+
+extension ExtensionDateTime on DateTime {
+  bool isBeforeOrEqual(DateTime date) => isBefore(date) || isAtSameMomentAs(date);
+
+  bool isAfterOrEqual(DateTime date) => isAfter(date) || isAtSameMomentAs(date);
+
+  bool operator <(DateTime other) => (isBefore(other));
+  bool operator >(DateTime other) => (isAfter(other));
+  bool operator <=(DateTime other) => (isBeforeOrEqual(other));
+  bool operator >=(DateTime other) => (isAfterOrEqual(other));
+  bool isSameDate(DateTime other) => year == other.year && month == other.month && day == other.day;
+  bool isBeforeOrSameDate(DateTime other) => isBefore(other) || isSameDate(other);
+  bool isAfterOrSameDate(DateTime other) => isAfter(other) || isSameDate(other);
+}

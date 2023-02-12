@@ -9,4 +9,8 @@ class WeatherListRepository {
   Future<WeatherListResponse> getValues() async {
     return _source.getValues();
   }
+
+  Future<String> getDescriptions() async {
+    return _source.getDescriptions();
+  }
 }

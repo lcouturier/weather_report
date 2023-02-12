@@ -4,9 +4,9 @@ part 'weather_token.g.dart';
 
 @JsonSerializable()
 class WeatherToken {
-  @JsonKey(name: 'parameter')
+  @JsonKey(name: 'access_token')
   final String accessToken;
-  @JsonKey(name: 'tokenType')
+  @JsonKey(name: 'token_type')
   final String tokenType;
 
   const WeatherToken({

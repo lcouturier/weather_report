@@ -29,7 +29,7 @@ class WeatherListResponse {
 @JsonSerializable()
 class Dates {
   @JsonKey(name: 'date')
-  final String date;
+  final DateTime date;
   @JsonKey(name: 'value')
   final double value;
   const Dates({

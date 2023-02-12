@@ -20,7 +20,7 @@ mixin _$WeatherListState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() loaded,
+    required TResult Function(List<WeatherItem> items) loaded,
     required TResult Function() error,
   }) =>
       throw _privateConstructorUsedError;
@@ -28,7 +28,7 @@ mixin _$WeatherListState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(List<WeatherItem> items)? loaded,
     TResult Function()? error,
   }) =>
       throw _privateConstructorUsedError;
@@ -36,7 +36,7 @@ mixin _$WeatherListState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(List<WeatherItem> items)? loaded,
     TResult Function()? error,
     required TResult orElse(),
   }) =>
@@ -119,7 +119,7 @@ class _$_InitialState implements _InitialState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() loaded,
+    required TResult Function(List<WeatherItem> items) loaded,
     required TResult Function() error,
   }) {
     return initial();
@@ -130,7 +130,7 @@ class _$_InitialState implements _InitialState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(List<WeatherItem> items)? loaded,
     TResult Function()? error,
   }) {
     return initial?.call();
@@ -141,7 +141,7 @@ class _$_InitialState implements _InitialState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(List<WeatherItem> items)? loaded,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -221,7 +221,7 @@ class _$_LoadingState implements _LoadingState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() loaded,
+    required TResult Function(List<WeatherItem> items) loaded,
     required TResult Function() error,
   }) {
     return loading();
@@ -232,7 +232,7 @@ class _$_LoadingState implements _LoadingState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(List<WeatherItem> items)? loaded,
     TResult Function()? error,
   }) {
     return loading?.call();
@@ -243,7 +243,7 @@ class _$_LoadingState implements _LoadingState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(List<WeatherItem> items)? loaded,
     TResult Function()? error,
     required TResult orElse(),
   }) {
@@ -285,6 +285,7 @@ abstract class _$$_SuccessStateCopyWith<$Res> {
   factory _$$_SuccessStateCopyWith(
           _$_SuccessState value, $Res Function(_$_SuccessState) then) =
       __$$_SuccessStateCopyWithImpl<$Res>;
+  $Res call({List<WeatherItem> items});
 }
 
 /// @nodoc
@@ -297,36 +298,63 @@ class __$$_SuccessStateCopyWithImpl<$Res>
 
   @override
   _$_SuccessState get _value => super._value as _$_SuccessState;
+
+  @override
+  $Res call({
+    Object? items = freezed,
+  }) {
+    return _then(_$_SuccessState(
+      items == freezed
+          ? _value._items
+          : items // ignore: cast_nullable_to_non_nullable
+              as List<WeatherItem>,
+    ));
+  }
 }
 
 /// @nodoc
 
 class _$_SuccessState implements _SuccessState {
-  const _$_SuccessState();
+  const _$_SuccessState(final List<WeatherItem> items) : _items = items;
+
+  final List<WeatherItem> _items;
+  @override
+  List<WeatherItem> get items {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_items);
+  }
 
   @override
   String toString() {
-    return 'WeatherListState.loaded()';
+    return 'WeatherListState.loaded(items: $items)';
   }
 
   @override
   bool operator ==(dynamic other) {
     return identical(this, other) ||
-        (other.runtimeType == runtimeType && other is _$_SuccessState);
+        (other.runtimeType == runtimeType &&
+            other is _$_SuccessState &&
+            const DeepCollectionEquality().equals(other._items, _items));
   }
 
   @override
-  int get hashCode => runtimeType.hashCode;
+  int get hashCode =>
+      Object.hash(runtimeType, const DeepCollectionEquality().hash(_items));
+
+  @JsonKey(ignore: true)
+  @override
+  _$$_SuccessStateCopyWith<_$_SuccessState> get copyWith =>
+      __$$_SuccessStateCopyWithImpl<_$_SuccessState>(this, _$identity);
 
   @override
   @optionalTypeArgs
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() loaded,
+    required TResult Function(List<WeatherItem> items) loaded,
     required TResult Function() error,
   }) {
-    return loaded();
+    return loaded(items);
   }
 
   @override
@@ -334,10 +362,10 @@ class _$_SuccessState implements _SuccessState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(List<WeatherItem> items)? loaded,
     TResult Function()? error,
   }) {
-    return loaded?.call();
+    return loaded?.call(items);
   }
 
   @override
@@ -345,12 +373,12 @@ class _$_SuccessState implements _SuccessState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(List<WeatherItem> items)? loaded,
     TResult Function()? error,
     required TResult orElse(),
   }) {
     if (loaded != null) {
-      return loaded();
+      return loaded(items);
     }
     return orElse();
   }
@@ -379,7 +407,12 @@ class _$_SuccessState implements _SuccessState {
 }
 
 abstract class _SuccessState implements WeatherListState {
-  const factory _SuccessState() = _$_SuccessState;
+  const factory _SuccessState(final List<WeatherItem> items) = _$_SuccessState;
+
+  List<WeatherItem> get items;
+  @JsonKey(ignore: true)
+  _$$_SuccessStateCopyWith<_$_SuccessState> get copyWith =>
+      throw _privateConstructorUsedError;
 }
 
 /// @nodoc
@@ -425,7 +458,7 @@ class _$_ErrorState implements _ErrorState {
   TResult when<TResult extends Object?>({
     required TResult Function() initial,
     required TResult Function() loading,
-    required TResult Function() loaded,
+    required TResult Function(List<WeatherItem> items) loaded,
     required TResult Function() error,
   }) {
     return error();
@@ -436,7 +469,7 @@ class _$_ErrorState implements _ErrorState {
   TResult? whenOrNull<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(List<WeatherItem> items)? loaded,
     TResult Function()? error,
   }) {
     return error?.call();
@@ -447,7 +480,7 @@ class _$_ErrorState implements _ErrorState {
   TResult maybeWhen<TResult extends Object?>({
     TResult Function()? initial,
     TResult Function()? loading,
-    TResult Function()? loaded,
+    TResult Function(List<WeatherItem> items)? loaded,
     TResult Function()? error,
     required TResult orElse(),
   }) {

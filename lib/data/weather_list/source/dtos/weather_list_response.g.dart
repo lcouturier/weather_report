@@ -28,12 +28,12 @@ Map<String, dynamic> _$WeatherListResponseToJson(
     };
 
 Dates _$DatesFromJson(Map<String, dynamic> json) => Dates(
-      date: json['date'] as String,
+      date: DateTime.parse(json['date'] as String),
       value: (json['value'] as num).toDouble(),
     );
 
 Map<String, dynamic> _$DatesToJson(Dates instance) => <String, dynamic>{
-      'date': instance.date,
+      'date': instance.date.toIso8601String(),
       'value': instance.value,
     };
 

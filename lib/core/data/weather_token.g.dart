@@ -7,12 +7,12 @@ part of 'weather_token.dart';
 // **************************************************************************
 
 WeatherToken _$WeatherTokenFromJson(Map<String, dynamic> json) => WeatherToken(
-      accessToken: json['parameter'] as String,
-      tokenType: json['tokenType'] as String,
+      accessToken: json['access_token'] as String,
+      tokenType: json['token_type'] as String,
     );
 
 Map<String, dynamic> _$WeatherTokenToJson(WeatherToken instance) =>
     <String, dynamic>{
-      'parameter': instance.accessToken,
-      'tokenType': instance.tokenType,
+      'access_token': instance.accessToken,
+      'token_type': instance.tokenType,
     };

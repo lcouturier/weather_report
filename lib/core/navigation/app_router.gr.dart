@@ -20,7 +20,7 @@ class _$AppRouter extends RootStackRouter {
     WeatherListRoute.name: (routeData) {
       return MaterialPageX<dynamic>(
         routeData: routeData,
-        child: const WeatherListPage(),
+        child: WrappedRoute(child: const WeatherListPage()),
       );
     }
   };
