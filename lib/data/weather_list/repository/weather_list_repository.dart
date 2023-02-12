@@ -1,6 +1,8 @@
+import 'package:injectable/injectable.dart';
 import 'package:weather_report/data/weather_list/source/dtos/weather_list_response.dart';
 import 'package:weather_report/data/weather_list/source/weather_list_source.dart';
 
+@injectable
 class WeatherListRepository {
   final WeatherListSource _source;
 

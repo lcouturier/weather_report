@@ -5,6 +5,7 @@ import 'package:weather_report/core/navigation/app_router.dart';
 import 'core/injection/injection.dart';
 
 void main() {
+  configureDependencies();
   getIt.registerSingleton<AppRouter>(AppRouter());
   runApp(MainApp());
 }

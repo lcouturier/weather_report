@@ -7,7 +7,7 @@ mixin TokenAuth {
   static Future<String> _getAuthToken(String token) async {
     final result = await DioClient().get(
       "https://login.meteomatics.com/api/v1/token",
-      headers: {'Authorization': 'authValue'},
+      headers: {'Authorization': ""},
     );
 
     return WeatherToken.fromJson(result.data).accessToken;

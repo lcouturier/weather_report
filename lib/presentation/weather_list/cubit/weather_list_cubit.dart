@@ -15,8 +15,11 @@ class WeatherListCubit extends Cubit<WeatherListState> {
   Future<void> fetch() async {
     emit(const WeatherListState.loading());
     try {
+      final startDate = DateTime.now();
+      final endDate = DateTime.now().add(5.days);
+
       final descriptions = await _repository.getDescriptions();
-      final weatherDescriptions = LineSplitter()
+      final weatherDescriptions = const LineSplitter()
           .convert(descriptions)
           .skip(1)
           .map((e) => e.split(";"))
@@ -25,9 +28,6 @@ class WeatherListCubit extends Cubit<WeatherListState> {
       final response = await _repository.getValues();
       final symbolItems = response.data.where((e) => e.parameter == 'weather_symbol_24h:idx').toList();
       final tempItems = response.data.where((e) => e.parameter == 't_2m:C').toList();
-
-      final startDate = DateTime.now();
-      final endDate = DateTime.now().add(5.days);
 
       final currentSymbol = symbolItems.first.coordinates.first.dates
           .where((e) => ((e.date >= startDate) && (e.date <= endDate)))

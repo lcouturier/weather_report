@@ -4,7 +4,7 @@ import 'package:weather_report/domain/symbol.dart';
 part 'weather_item.freezed.dart';
 
 @freezed
-abstract class WeatherItem with _$WeatherItem {
+class WeatherItem with _$WeatherItem {
   factory WeatherItem({
     required DateTime date,
     required double temp,
@@ -14,7 +14,7 @@ abstract class WeatherItem with _$WeatherItem {
 }
 
 @freezed
-abstract class WeatherItemDescription with _$WeatherItemDescription {
+class WeatherItemDescription with _$WeatherItemDescription {
   factory WeatherItemDescription({
     required DateTime date,
     required String description,
