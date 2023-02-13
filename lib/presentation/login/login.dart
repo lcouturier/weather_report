@@ -26,15 +26,20 @@ bool isPasswordValid(String? value) {
 
 class _LoginPageState extends State<LoginPage> {
   late TextEditingController _emailController;
+  late TextEditingController _passwordController;
 
   @override
   void initState() {
     super.initState();
     _emailController = TextEditingController();
+    _passwordController = TextEditingController();
+    _emailController.text = "laurent@gmail.com";
+    _passwordController.text = 'Mjlhbu1644*';
   }
 
   @override
   void dispose() {
+    _passwordController.dispose();
     _emailController.dispose();
     super.dispose();
   }
@@ -50,13 +55,7 @@ class _LoginPageState extends State<LoginPage> {
         top: Column(
           children: <Widget>[
             Center(
-              child: SizedBox(
-                  width: 200,
-                  height: 150,
-                  /*decoration: BoxDecoration(
-                        color: Colors.red,
-                        borderRadius: BorderRadius.circular(50.0)),*/
-                  child: Image.asset(ImagePaths.login)),
+              child: SizedBox(width: 200, height: 150, child: Image.asset(ImagePaths.login)),
             ).paddingOnly(top: 60),
             const SizedBox(
               height: 48,
@@ -78,6 +77,7 @@ class _LoginPageState extends State<LoginPage> {
               keyboardType: TextInputType.emailAddress,
             ).paddingSymmetric(horizontal: 24),
             TextFormField(
+              controller: _passwordController,
               obscureText: true,
               decoration: const InputDecoration(
                 border: OutlineInputBorder(),
