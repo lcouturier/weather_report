@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:flutter_bloc/flutter_bloc.dart';
+
 extension FuncExtensions<T, TResult> on TResult Function(T) {
   TResult Function(T) memoize() {
     var d = <T, TResult>{};
@@ -44,4 +46,14 @@ extension ExtensionDateTime on DateTime {
   bool isSameDate(DateTime other) => year == other.year && month == other.month && day == other.day;
   bool isBeforeOrSameDate(DateTime other) => isBefore(other) || isSameDate(other);
   bool isAfterOrSameDate(DateTime other) => isAfter(other) || isSameDate(other);
+}
+
+extension ExtensionBlocBase<State> on BlocBase<State> {
+  void emitSafe(State state) {
+    if (isClosed) {
+      return;
+    }
+    // ignore: invalid_use_of_visible_for_testing_member, invalid_use_of_protected_member
+    emit(state);
+  }
 }

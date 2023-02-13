@@ -17,9 +17,9 @@ final _privateConstructorUsedError = UnsupportedError(
 /// @nodoc
 mixin _$WeatherItem {
   DateTime get date => throw _privateConstructorUsedError;
-  double get temp => throw _privateConstructorUsedError;
-  WeatherSymbol get symbol => throw _privateConstructorUsedError;
-  String get description => throw _privateConstructorUsedError;
+  double? get temperature => throw _privateConstructorUsedError;
+  WeatherSymbol? get symbol => throw _privateConstructorUsedError;
+  String? get description => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $WeatherItemCopyWith<WeatherItem> get copyWith =>
@@ -32,7 +32,10 @@ abstract class $WeatherItemCopyWith<$Res> {
           WeatherItem value, $Res Function(WeatherItem) then) =
       _$WeatherItemCopyWithImpl<$Res>;
   $Res call(
-      {DateTime date, double temp, WeatherSymbol symbol, String description});
+      {DateTime date,
+      double? temperature,
+      WeatherSymbol? symbol,
+      String? description});
 }
 
 /// @nodoc
@@ -46,7 +49,7 @@ class _$WeatherItemCopyWithImpl<$Res> implements $WeatherItemCopyWith<$Res> {
   @override
   $Res call({
     Object? date = freezed,
-    Object? temp = freezed,
+    Object? temperature = freezed,
     Object? symbol = freezed,
     Object? description = freezed,
   }) {
@@ -55,18 +58,18 @@ class _$WeatherItemCopyWithImpl<$Res> implements $WeatherItemCopyWith<$Res> {
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      temp: temp == freezed
-          ? _value.temp
-          : temp // ignore: cast_nullable_to_non_nullable
-              as double,
+      temperature: temperature == freezed
+          ? _value.temperature
+          : temperature // ignore: cast_nullable_to_non_nullable
+              as double?,
       symbol: symbol == freezed
           ? _value.symbol
           : symbol // ignore: cast_nullable_to_non_nullable
-              as WeatherSymbol,
+              as WeatherSymbol?,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -79,7 +82,10 @@ abstract class _$$_WeatherItemCopyWith<$Res>
       __$$_WeatherItemCopyWithImpl<$Res>;
   @override
   $Res call(
-      {DateTime date, double temp, WeatherSymbol symbol, String description});
+      {DateTime date,
+      double? temperature,
+      WeatherSymbol? symbol,
+      String? description});
 }
 
 /// @nodoc
@@ -95,7 +101,7 @@ class __$$_WeatherItemCopyWithImpl<$Res> extends _$WeatherItemCopyWithImpl<$Res>
   @override
   $Res call({
     Object? date = freezed,
-    Object? temp = freezed,
+    Object? temperature = freezed,
     Object? symbol = freezed,
     Object? description = freezed,
   }) {
@@ -104,18 +110,18 @@ class __$$_WeatherItemCopyWithImpl<$Res> extends _$WeatherItemCopyWithImpl<$Res>
           ? _value.date
           : date // ignore: cast_nullable_to_non_nullable
               as DateTime,
-      temp: temp == freezed
-          ? _value.temp
-          : temp // ignore: cast_nullable_to_non_nullable
-              as double,
+      temperature: temperature == freezed
+          ? _value.temperature
+          : temperature // ignore: cast_nullable_to_non_nullable
+              as double?,
       symbol: symbol == freezed
           ? _value.symbol
           : symbol // ignore: cast_nullable_to_non_nullable
-              as WeatherSymbol,
+              as WeatherSymbol?,
       description: description == freezed
           ? _value.description
           : description // ignore: cast_nullable_to_non_nullable
-              as String,
+              as String?,
     ));
   }
 }
@@ -124,23 +130,20 @@ class __$$_WeatherItemCopyWithImpl<$Res> extends _$WeatherItemCopyWithImpl<$Res>
 
 class _$_WeatherItem implements _WeatherItem {
   _$_WeatherItem(
-      {required this.date,
-      required this.temp,
-      required this.symbol,
-      required this.description});
+      {required this.date, this.temperature, this.symbol, this.description});
 
   @override
   final DateTime date;
   @override
-  final double temp;
+  final double? temperature;
   @override
-  final WeatherSymbol symbol;
+  final WeatherSymbol? symbol;
   @override
-  final String description;
+  final String? description;
 
   @override
   String toString() {
-    return 'WeatherItem(date: $date, temp: $temp, symbol: $symbol, description: $description)';
+    return 'WeatherItem(date: $date, temperature: $temperature, symbol: $symbol, description: $description)';
   }
 
   @override
@@ -149,7 +152,8 @@ class _$_WeatherItem implements _WeatherItem {
         (other.runtimeType == runtimeType &&
             other is _$_WeatherItem &&
             const DeepCollectionEquality().equals(other.date, date) &&
-            const DeepCollectionEquality().equals(other.temp, temp) &&
+            const DeepCollectionEquality()
+                .equals(other.temperature, temperature) &&
             const DeepCollectionEquality().equals(other.symbol, symbol) &&
             const DeepCollectionEquality()
                 .equals(other.description, description));
@@ -159,7 +163,7 @@ class _$_WeatherItem implements _WeatherItem {
   int get hashCode => Object.hash(
       runtimeType,
       const DeepCollectionEquality().hash(date),
-      const DeepCollectionEquality().hash(temp),
+      const DeepCollectionEquality().hash(temperature),
       const DeepCollectionEquality().hash(symbol),
       const DeepCollectionEquality().hash(description));
 
@@ -172,18 +176,18 @@ class _$_WeatherItem implements _WeatherItem {
 abstract class _WeatherItem implements WeatherItem {
   factory _WeatherItem(
       {required final DateTime date,
-      required final double temp,
-      required final WeatherSymbol symbol,
-      required final String description}) = _$_WeatherItem;
+      final double? temperature,
+      final WeatherSymbol? symbol,
+      final String? description}) = _$_WeatherItem;
 
   @override
   DateTime get date;
   @override
-  double get temp;
+  double? get temperature;
   @override
-  WeatherSymbol get symbol;
+  WeatherSymbol? get symbol;
   @override
-  String get description;
+  String? get description;
   @override
   @JsonKey(ignore: true)
   _$$_WeatherItemCopyWith<_$_WeatherItem> get copyWith =>

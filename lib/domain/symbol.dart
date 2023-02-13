@@ -28,6 +28,6 @@ enum WeatherSymbol {
 
   static WeatherSymbol Function(int) fromOrdinal = _fromOrdinalCore.memoize();
   static WeatherSymbol _fromOrdinalCore(int value) {
-    return WeatherSymbol.values.firstWhere((e) => e.value == value);
+    return WeatherSymbol.values.firstWhere((e) => e.value == value, orElse: () => WeatherSymbol.none);
   }
 }

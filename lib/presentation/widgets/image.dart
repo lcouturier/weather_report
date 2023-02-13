@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class WeatherImage extends StatelessWidget {
   final String path;
@@ -31,21 +30,4 @@ class WeatherImage extends StatelessWidget {
       },
     );
   }
-}
-
-Widget svgLoad(
-  String assetName, {
-  Color? colorTint,
-  double? height,
-  double? width,
-  String? valueKey,
-  Alignment? alignment,
-}) {
-  return SvgPicture.asset(
-    "lib/assets/svg/$assetName",
-    color: colorTint,
-    height: height,
-    width: width,
-    alignment: alignment ?? Alignment.center,
-  );
 }

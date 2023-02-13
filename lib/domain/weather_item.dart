@@ -7,9 +7,9 @@ part 'weather_item.freezed.dart';
 class WeatherItem with _$WeatherItem {
   factory WeatherItem({
     required DateTime date,
-    required double temp,
-    required WeatherSymbol symbol,
-    required String description,
+    double? temperature,
+    WeatherSymbol? symbol,
+    String? description,
   }) = _WeatherItem;
 }
 
