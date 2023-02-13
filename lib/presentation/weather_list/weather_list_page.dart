@@ -2,6 +2,7 @@ import 'package:auto_route/auto_route.dart';
 import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:weather_report/core/data/cache_options.dart';
 import 'package:weather_report/core/injection/injection.dart';
 import 'package:weather_report/presentation/error/error_page.dart';
 import 'package:weather_report/presentation/weather_list/cubit/weather_list_cubit.dart';
@@ -41,7 +42,8 @@ class _WeatherListPageState extends State<WeatherListPage> {
         centerTitle: true,
         title: Text("Bonjour ${widget.name}"),
       ),
-      body: RefreshIndicator(onRefresh: () => _weatherListCubit.fetch(), child: _body()),
+      body: RefreshIndicator(
+          onRefresh: () => _weatherListCubit.fetch(cacheStrategy: CacheStrategy.forceReload), child: _body()),
     );
   }
 
