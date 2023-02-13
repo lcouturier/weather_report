@@ -19,13 +19,17 @@ class WeatherListCubit extends Cubit<WeatherListState> {
     return const LineSplitter()
         .convert(descriptions)
         .skip(1)
-        .map((e) => e.split(";"))
-        .map((e) => WeatherItemDescription(date: DateTime.parse(e[0]), description: e[1]))
+        .map((e) => Tuple2.fromList(e.split(";")))
+        .map((e) => WeatherItemDescription(date: DateTime.parse(e.item0), description: e.item1))
         .toList();
   }
 
-  Future<WeatherListResponse> _getWeatherData(CacheStrategy cacheStrategy) async {
-    return await _repository.getValues(cacheStrategy);
+  Future<Tuple2<List<Data>, List<Data>>> _getWeatherData(CacheStrategy cacheStrategy) async {
+    final result = await _repository.getValues(cacheStrategy);
+    return Tuple2(
+      result.data.where((e) => e.parameter == 'weather_symbol_24h:idx').toList(),
+      result.data.where((e) => e.parameter == 't_2m:C').toList(),
+    );
   }
 
   Future<void> fetch({CacheStrategy cacheStrategy = CacheStrategy.use}) async {
@@ -34,19 +38,17 @@ class WeatherListCubit extends Cubit<WeatherListState> {
       final startDate = DateTime.now();
       final endDate = DateTime.now().add(5.days);
 
-      final response = await _getWeatherData(cacheStrategy);
-      final symbolItems = response.data.where((e) => e.parameter == 'weather_symbol_24h:idx').toList();
-      final tempItems = response.data.where((e) => e.parameter == 't_2m:C').toList();
-
-      final symbols = symbolItems.first.coordinates.first.dates
-          .where((e) => ((e.date >= startDate) && (e.date <= endDate)))
-          .where((e) => e.date.hour == startDate.hour);
-
       final descriptions = (await _getDescriptions(cacheStrategy))
           .where((e) => ((e.date >= startDate) && (e.date <= endDate)))
           .where((e) => e.date.hour == startDate.hour);
 
-      final temperatures = tempItems.first.coordinates.first.dates
+      final response = await _getWeatherData(cacheStrategy);
+
+      final symbols = response.item0.first.coordinates.first.dates
+          .where((e) => ((e.date >= startDate) && (e.date <= endDate)))
+          .where((e) => e.date.hour == startDate.hour);
+
+      final temperatures = response.item1.first.coordinates.first.dates
           .where((e) => ((e.date >= startDate) && (e.date <= endDate)))
           .where((e) => e.date.hour == startDate.hour);
 
