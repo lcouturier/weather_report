@@ -5,9 +5,11 @@ import 'package:weather_report/core/extensions.dart';
 mixin TokenAuth {
   static Future<String> Function(String) getAuthToken = _getAuthToken.memoize();
   static Future<String> _getAuthToken(String token) async {
+    final authValue = '';
+
     final result = await DioClient().get(
       "https://login.meteomatics.com/api/v1/token",
-      headers: {'Authorization': ""},
+      headers: {'Authorization': authValue},
     );
 
     return WeatherToken.fromJson(result.data).accessToken;

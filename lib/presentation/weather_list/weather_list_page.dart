@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_report/core/injection/injection.dart';
+import 'package:weather_report/presentation/error/error_page.dart';
 import 'package:weather_report/presentation/weather_list/cubit/weather_list_cubit.dart';
 import 'package:weather_report/presentation/weather_list/cubit/weather_list_state.dart';
 import 'package:weather_report/presentation/widgets/core/extensions.dart';
@@ -47,26 +48,27 @@ class _WeatherListPageState extends State<WeatherListPage> {
     return BlocBuilder<WeatherListCubit, WeatherListState>(
       builder: (context, state) {
         return state.maybeWhen(
-          loaded: (items) {
-            return ListView.builder(
-              scrollDirection: Axis.vertical,
-              itemCount: items.length,
-              itemBuilder: (context, index) {
-                final item = items[index];
-                return ExpansionTile(
-                  initiallyExpanded: false,
-                  leading: WeatherImage(item.symbol.image),
-                  title: Text(DateFormat("d MMMM yyyy HH:mm").format(item.date.toLocal())),
-                  subtitle: Text("Température : ${item.temp}° .", maxLines: 1, textAlign: TextAlign.left),
-                  children: <Widget>[
-                    ListTile(title: Text(item.description)),
-                  ],
-                );
-              },
-            );
-          },
+          loaded: (items) => Center(child: WeatherError(onRefresh: () => _weatherListCubit.fetch())),
+          // loaded: (items) {
+          //   return ListView.builder(
+          //     scrollDirection: Axis.vertical,
+          //     itemCount: items.length,
+          //     itemBuilder: (context, index) {
+          //       final item = items[index];
+          //       return ExpansionTile(
+          //         initiallyExpanded: false,
+          //         leading: WeatherImage(item.symbol.image),
+          //         title: Text(DateFormat("d MMMM yyyy HH:mm").format(item.date.toLocal())),
+          //         subtitle: Text("Température : ${item.temp}° .", maxLines: 1, textAlign: TextAlign.left),
+          //         children: <Widget>[
+          //           ListTile(title: Text(item.description)),
+          //         ],
+          //       );
+          //     },
+          //   );
+          // },
           loading: () => _loading(),
-          orElse: () => Container(),
+          orElse: () => WeatherError(onRefresh: () => _weatherListCubit.fetch()),
         );
       },
     );
