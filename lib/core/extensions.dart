@@ -16,6 +16,10 @@ extension FuncExtensions<T, TResult> on TResult Function(T) {
 
 extension ExtensionString on String {
   String encodeBase64() => base64Encode(utf8.encode(this));
+  bool get hasNumber => RegExp(r'[0-9]{1,}').hasMatch(this);
+  bool get hasUpper => RegExp(r'[A-Z]{1,}').hasMatch(this);
+  bool get hasLower => RegExp(r'[a-z]{1,}').hasMatch(this);
+  bool get allDigit => RegExp(r'^[0-9]+$').hasMatch(this);
 }
 
 extension IntExtensions on int {

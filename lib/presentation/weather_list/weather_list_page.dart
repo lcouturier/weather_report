@@ -10,7 +10,8 @@ import 'package:weather_report/presentation/widgets/core/extensions.dart';
 import 'package:weather_report/presentation/widgets/image.dart';
 
 class WeatherListPage extends StatefulWidget implements AutoRouteWrapper {
-  const WeatherListPage({super.key});
+  final String name;
+  const WeatherListPage({super.key, required this.name});
 
   @override
   State<WeatherListPage> createState() => _WeatherListPageState();
@@ -38,7 +39,7 @@ class _WeatherListPageState extends State<WeatherListPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text("Bonjour Laurent"),
+        title: Text("Bonjour ${widget.name}"),
       ),
       body: RefreshIndicator(onRefresh: () => _weatherListCubit.fetch(), child: _body()),
     );
@@ -48,25 +49,24 @@ class _WeatherListPageState extends State<WeatherListPage> {
     return BlocBuilder<WeatherListCubit, WeatherListState>(
       builder: (context, state) {
         return state.maybeWhen(
-          loaded: (items) => Center(child: WeatherError(onRefresh: () => _weatherListCubit.fetch())),
-          // loaded: (items) {
-          //   return ListView.builder(
-          //     scrollDirection: Axis.vertical,
-          //     itemCount: items.length,
-          //     itemBuilder: (context, index) {
-          //       final item = items[index];
-          //       return ExpansionTile(
-          //         initiallyExpanded: false,
-          //         leading: WeatherImage(item.symbol.image),
-          //         title: Text(DateFormat("d MMMM yyyy HH:mm").format(item.date.toLocal())),
-          //         subtitle: Text("Température : ${item.temp}° .", maxLines: 1, textAlign: TextAlign.left),
-          //         children: <Widget>[
-          //           ListTile(title: Text(item.description)),
-          //         ],
-          //       );
-          //     },
-          //   );
-          // },
+          loaded: (items) {
+            return ListView.builder(
+              scrollDirection: Axis.vertical,
+              itemCount: items.length,
+              itemBuilder: (context, index) {
+                final item = items[index];
+                return ExpansionTile(
+                  initiallyExpanded: false,
+                  leading: WeatherImage(item.symbol.image),
+                  title: Text(DateFormat("d MMMM yyyy HH:mm").format(item.date.toLocal())),
+                  subtitle: Text("Température : ${item.temp}° .", maxLines: 1, textAlign: TextAlign.left),
+                  children: <Widget>[
+                    ListTile(title: Text(item.description)),
+                  ],
+                );
+              },
+            );
+          },
           loading: () => _loading(),
           orElse: () => WeatherError(onRefresh: () => _weatherListCubit.fetch()),
         );

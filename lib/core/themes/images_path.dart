@@ -4,7 +4,7 @@
 
 class ImagePaths {
   static const String _imagesFolder = 'lib/assets/images';
-
+  static const String login = '$_imagesFolder/weather.png';
   // region Illustrations
   static const String sunny = '$_imagesFolder/wsymbol_0001_sunny.png';
   static const String sunny_intervals = '$_imagesFolder/wsymbol_0002_sunny_intervals.png';
