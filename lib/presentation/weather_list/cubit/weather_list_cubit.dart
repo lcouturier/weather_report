@@ -43,27 +43,26 @@ class WeatherListCubit extends Cubit<WeatherListState> {
 
       final descriptions = (await _getDescriptions(startDate, endDate, cacheStrategy))
           .where((e) => ((e.date >= startDate) && (e.date <= endDate)))
-          .where((e) => e.date.hour == startDate.hour);
+          .where((e) => e.date.hour == currentDate.hour);
 
       final response = await _getWeatherData(startDate, endDate, cacheStrategy);
 
       final symbols = response.symbols
           .where((e) => ((e.date >= startDate) && (e.date <= endDate)))
-          .where((e) => e.date.hour == startDate.hour)
+          .where((e) => e.date.hour == currentDate.hour)
           .toList();
 
       final temperatures = response.temperatures
           .where((e) => ((e.date >= startDate) && (e.date <= endDate)))
-          .where((e) => e.date.hour == startDate.hour)
+          .where((e) => e.date.hour == currentDate.hour)
           .toList();
 
       final result = temperatures
           .zip(
               symbols,
-              (WeatherDate e, WeatherDate other) => WeatherItem(
-                  date: e.date, temperature: e.value, symbol: WeatherSymbol.fromOrdinal(other.value.toInt())))
-          .zip(
-              descriptions, (WeatherItem e, WeatherItemDescription other) => e.copyWith(description: other.description))
+              (WeatherDate l, WeatherDate r) =>
+                  WeatherItem(date: l.date, temperature: l.value, symbol: WeatherSymbol.fromOrdinal(r.value.toInt())))
+          .zip(descriptions, (WeatherItem l, WeatherItemDescription r) => l.copyWith(description: r.description))
           .toList();
 
       emit(WeatherListState.loaded(result));
