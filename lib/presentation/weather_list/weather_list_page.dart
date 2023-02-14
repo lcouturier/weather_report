@@ -5,6 +5,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_report/core/data/cache_options.dart';
 import 'package:weather_report/core/injection/injection.dart';
 import 'package:weather_report/core/themes/styles.dart';
+import 'package:weather_report/domain/weather_item.dart';
 import 'package:weather_report/presentation/error/error_page.dart';
 import 'package:weather_report/presentation/weather_list/cubit/weather_list_cubit.dart';
 import 'package:weather_report/presentation/weather_list/cubit/weather_list_state.dart';
@@ -61,18 +62,7 @@ class _WeatherListPageState extends State<WeatherListPage> {
               itemCount: items.length,
               itemBuilder: (context, index) {
                 final item = items[index];
-                return ExpansionTile(
-                  initiallyExpanded: index == 0,
-                  leading: WeatherImage(item.symbol!.image),
-                  title: Text(DateFormat("d MMMM yyyy HH:mm").format(item.date.toLocal()), style: bodyMediumStyle),
-                  subtitle: Text("Température : ${item.temperature}°",
-                      maxLines: 1, textAlign: TextAlign.left, style: bodyMediumStyle),
-                  children: <Widget>[
-                    ListTile(
-                      title: Text(item.description!, style: bodyMediumStyle.copyWith(color: Colors.blueGrey.shade400)),
-                    )
-                  ],
-                );
+                return _buildTile(index, item);
               },
             );
           },
@@ -80,6 +70,21 @@ class _WeatherListPageState extends State<WeatherListPage> {
           orElse: () => Center(child: WeatherError(onRefresh: () => _weatherListCubit.fetch())),
         );
       },
+    );
+  }
+
+  Widget _buildTile(int index, WeatherItem item) {
+    return ExpansionTile(
+      initiallyExpanded: index == 0,
+      leading: WeatherImage(item.symbol!.image),
+      title: Text(DateFormat("d MMMM yyyy HH:mm").format(item.date.toLocal()), style: bodyMediumStyle),
+      subtitle:
+          Text("Température : ${item.temperature}°", maxLines: 1, textAlign: TextAlign.left, style: bodyMediumStyle),
+      children: <Widget>[
+        ListTile(
+          title: Text(item.description!, style: bodyMediumStyle.copyWith(color: Colors.blueGrey.shade400)),
+        )
+      ],
     );
   }
 
