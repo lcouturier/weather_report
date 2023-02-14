@@ -43,7 +43,11 @@ class _WeatherListPageState extends State<WeatherListPage> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text("Bonjour ${widget.name}"),
+        title: Text(
+          "Bonjour ${widget.name}",
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
+        ),
       ),
       body: RefreshIndicator(
         onRefresh: () => _weatherListCubit.fetch(cacheStrategy: CacheStrategy.forceReload),

@@ -1,5 +1,3 @@
-import 'dart:convert';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:darq/darq.dart';
 import 'package:weather_report/core/data/cache_options.dart';
@@ -18,19 +16,19 @@ class WeatherListCubit extends Cubit<WeatherListState> {
   Future<List<WeatherItemDescription>> _getDescriptions(
       DateTime startDate, DateTime endDate, CacheStrategy cacheStrategy) async {
     final descriptions = await _repository.getDescriptions(startDate, endDate, cacheStrategy);
-    return const LineSplitter()
-        .convert(descriptions)
-        .skip(1)
-        .map((e) => Tuple2.fromList(e.split(";")))
-        .map((e) => WeatherItemDescription(date: DateTime.parse(e.item0), description: e.item1))
-        .toList();
+    return descriptions;
   }
 
   Future<WeatherDatas> _getWeatherData(DateTime startDate, DateTime endDate, CacheStrategy cacheStrategy) async {
     final items = await _repository.getValues(startDate, endDate, cacheStrategy);
-    return WeatherDatas(
-      symbols: items.firstWhere((e) => e.parameter == 'weather_symbol_24h:idx').coordinates.first.dates,
-      temperatures: items.firstWhere((e) => e.parameter == 't_2m:C').coordinates.first.dates,
+    return items;
+  }
+
+  WeatherItem _transform(WeatherDate l, WeatherDate r) {
+    return WeatherItem(
+      date: l.date,
+      temperature: l.maybeWhen(temperature: (date, value) => value, orElse: () => 0.0),
+      symbol: r.maybeWhen(symbol: (date, value) => value, orElse: () => WeatherSymbol.none),
     );
   }
 
@@ -39,30 +37,30 @@ class WeatherListCubit extends Cubit<WeatherListState> {
     try {
       final currentDate = DateTime.now();
       final startDate = DateTime(currentDate.year, currentDate.month, currentDate.day, 0, 0, 0);
-      final endDate = DateTime.now().add(4.days);
+      final endDate = DateTime.now().add(5.days);
 
       final descriptions = (await _getDescriptions(startDate, endDate, cacheStrategy))
           .where((e) => ((e.date >= startDate) && (e.date <= endDate)))
           .where((e) => e.date.hour == currentDate.hour);
 
-      final response = await _getWeatherData(startDate, endDate, cacheStrategy);
+      final weatherDatas = await _getWeatherData(startDate, endDate, cacheStrategy);
 
-      final symbols = response.symbols
+      final symbols = weatherDatas.symbols
           .where((e) => ((e.date >= startDate) && (e.date <= endDate)))
           .where((e) => e.date.hour == currentDate.hour)
           .toList();
 
-      final temperatures = response.temperatures
+      final temperatures = weatherDatas.temperatures
           .where((e) => ((e.date >= startDate) && (e.date <= endDate)))
           .where((e) => e.date.hour == currentDate.hour)
           .toList();
 
       final result = temperatures
+          .zip(symbols, _transform)
           .zip(
-              symbols,
-              (WeatherDate l, WeatherDate r) =>
-                  WeatherItem(date: l.date, temperature: l.value, symbol: WeatherSymbol.fromOrdinal(r.value.toInt())))
-          .zip(descriptions, (WeatherItem l, WeatherItemDescription r) => l.copyWith(description: r.description))
+            descriptions,
+            (WeatherItem l, WeatherItemDescription r) => l.copyWith(description: r.description),
+          )
           .toList();
 
       emit(WeatherListState.loaded(result));

@@ -1,7 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
-import 'package:weather_report/domain/coordinates.dart';
-import 'package:weather_report/domain/data.dart';
+import 'package:weather_report/domain/data_type.dart';
 import 'package:weather_report/domain/date.dart';
+import 'package:weather_report/domain/symbol.dart';
 
 part 'weather_list_response.g.dart';
 
@@ -42,8 +42,11 @@ class Dates {
   factory Dates.fromJson(Map<String, dynamic> json) => _$DatesFromJson(json);
   Map<String, dynamic> toJson() => _$DatesToJson(this);
 
-  WeatherDate toDomain() {
-    return WeatherDate(date: date, value: value);
+  WeatherDate toDomain({required DataType dataType}) {
+    return dataType.when(
+      temperature: () => WeatherDate.temperature(date: date, temperature: value),
+      symbol: () => WeatherDate.symbol(date: date, symbol: WeatherSymbol.fromOrdinal(value.toInt())),
+    );
   }
 }
 
@@ -62,10 +65,6 @@ class Coordinates {
   });
   factory Coordinates.fromJson(Map<String, dynamic> json) => _$CoordinatesFromJson(json);
   Map<String, dynamic> toJson() => _$CoordinatesToJson(this);
-
-  WeatherCoordinates toDomain() {
-    return WeatherCoordinates(lat: lat, lon: lon, dates: dates.map((e) => e.toDomain()).toList());
-  }
 }
 
 @JsonSerializable()
@@ -80,11 +79,4 @@ class Data {
   });
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
   Map<String, dynamic> toJson() => _$DataToJson(this);
-
-  WeatherData toDomain() {
-    return WeatherData(
-      parameter: parameter,
-      coordinates: coordinates.map((e) => e.toDomain()).toList(),
-    );
-  }
 }

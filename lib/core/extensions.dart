@@ -57,3 +57,7 @@ extension ExtensionBlocBase<State> on BlocBase<State> {
     emit(state);
   }
 }
+
+extension MapExtensionsKeyValue<K, V> on Map<K, V> {
+  R tryGetValue<S, R>({required S key, required R Function() orElse}) => containsKey(key) ? this[key] as R : orElse();
+}
