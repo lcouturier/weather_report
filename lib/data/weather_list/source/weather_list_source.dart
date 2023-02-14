@@ -16,7 +16,7 @@ class WeatherListSource {
 
   Future<WeatherListResponse> getValues(CacheStrategy cacheStrategy) async {
     final response = await DioClient().get(
-      '$baseUrl/2023-02-12T00:00:00Z--2023-02-19T00:00:00Z:PT1H/weather_symbol_24h:idx,t_2m:C/${Position.paris.toString()}/json',
+      '$baseUrl/2023-02-14T00:00:00Z--2023-02-20T00:00:00Z:PT1H/weather_symbol_24h:idx,t_2m:C/${Position.paris.toString()}/json',
       interceptors: [
         getIt<TokenInterceptor>(),
         DioCacheInterceptor(options: CacheOptionsManager.defaultOptions.withCustom(cache: cacheStrategy)),
@@ -28,7 +28,7 @@ class WeatherListSource {
 
   Future<String> getDescriptions(CacheStrategy cacheStrategy) async {
     final response = await DioClient().get(
-      '$baseUrl/2023-02-12T00:00:00Z--2023-02-19T00:00:00Z:PT1H/weather_text_fr:str/${Position.paris.toString()}/csv',
+      '$baseUrl/2023-02-14T00:00:00Z--2023-02-20T00:00:00Z:PT1H/weather_text_fr:str/${Position.paris.toString()}/csv',
       interceptors: [
         getIt<TokenInterceptor>(),
         DioCacheInterceptor(options: CacheOptionsManager.defaultOptions.withCustom(cache: cacheStrategy)),

@@ -5,7 +5,8 @@ import 'package:darq/darq.dart';
 import 'package:weather_report/core/data/cache_options.dart';
 import 'package:weather_report/core/extensions.dart';
 import 'package:weather_report/data/weather_list/repository/weather_list_repository.dart';
-import 'package:weather_report/data/weather_list/source/dtos/weather_list_response.dart';
+import 'package:weather_report/domain/data.dart';
+import 'package:weather_report/domain/date.dart';
 import 'package:weather_report/domain/symbol.dart';
 import 'package:weather_report/domain/weather_item.dart';
 import 'package:weather_report/presentation/weather_list/cubit/weather_list_state.dart';
@@ -24,11 +25,11 @@ class WeatherListCubit extends Cubit<WeatherListState> {
         .toList();
   }
 
-  Future<Tuple2<List<Data>, List<Data>>> _getWeatherData(CacheStrategy cacheStrategy) async {
-    final result = await _repository.getValues(cacheStrategy);
-    return Tuple2(
-      result.data.where((e) => e.parameter == 'weather_symbol_24h:idx').toList(),
-      result.data.where((e) => e.parameter == 't_2m:C').toList(),
+  Future<WeatherDatas> _getWeatherData(CacheStrategy cacheStrategy) async {
+    final items = await _repository.getValues(cacheStrategy);
+    return WeatherDatas(
+      symbols: items.firstWhere((e) => e.parameter == 'weather_symbol_24h:idx'),
+      temperatures: items.firstWhere((e) => e.parameter == 't_2m:C'),
     );
   }
 
@@ -44,23 +45,26 @@ class WeatherListCubit extends Cubit<WeatherListState> {
 
       final response = await _getWeatherData(cacheStrategy);
 
-      final symbols = response.item0.first.coordinates.first.dates
+      final symbols = response.symbols.coordinates.first.dates
           .where((e) => ((e.date >= startDate) && (e.date <= endDate)))
-          .where((e) => e.date.hour == startDate.hour);
+          .where((e) => e.date.hour == startDate.hour)
+          .toList();
 
-      final temperatures = response.item1.first.coordinates.first.dates
+      final temperatures = response.temperatures.coordinates.first.dates
           .where((e) => ((e.date >= startDate) && (e.date <= endDate)))
-          .where((e) => e.date.hour == startDate.hour);
+          .where((e) => e.date.hour == startDate.hour)
+          .toList();
 
       final result = temperatures
           .zip(
               symbols,
-              (Dates e, Dates other) => WeatherItem(
+              (WeatherDate e, WeatherDate other) => WeatherItem(
                   date: e.date, temperature: e.value, symbol: WeatherSymbol.fromOrdinal(other.value.toInt())))
-          .zip(descriptions,
-              (WeatherItem e, WeatherItemDescription other) => e.copyWith(description: other.description));
+          .zip(
+              descriptions, (WeatherItem e, WeatherItemDescription other) => e.copyWith(description: other.description))
+          .toList();
 
-      emit(WeatherListState.loaded(result.toList()));
+      emit(WeatherListState.loaded(result));
     } on Exception catch (_) {
       emit(const WeatherListState.error());
     }
