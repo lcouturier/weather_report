@@ -28,8 +28,8 @@ class WeatherListCubit extends Cubit<WeatherListState> {
   Future<WeatherDatas> _getWeatherData(CacheStrategy cacheStrategy) async {
     final items = await _repository.getValues(cacheStrategy);
     return WeatherDatas(
-      symbols: items.firstWhere((e) => e.parameter == 'weather_symbol_24h:idx'),
-      temperatures: items.firstWhere((e) => e.parameter == 't_2m:C'),
+      symbols: items.firstWhere((e) => e.parameter == 'weather_symbol_24h:idx').coordinates.first.dates,
+      temperatures: items.firstWhere((e) => e.parameter == 't_2m:C').coordinates.first.dates,
     );
   }
 
@@ -45,12 +45,12 @@ class WeatherListCubit extends Cubit<WeatherListState> {
 
       final response = await _getWeatherData(cacheStrategy);
 
-      final symbols = response.symbols.coordinates.first.dates
+      final symbols = response.symbols
           .where((e) => ((e.date >= startDate) && (e.date <= endDate)))
           .where((e) => e.date.hour == startDate.hour)
           .toList();
 
-      final temperatures = response.temperatures.coordinates.first.dates
+      final temperatures = response.temperatures
           .where((e) => ((e.date >= startDate) && (e.date <= endDate)))
           .where((e) => e.date.hour == startDate.hour)
           .toList();

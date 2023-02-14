@@ -77,7 +77,7 @@ class _WeatherListPageState extends State<WeatherListPage> {
             );
           },
           loading: () => _loading(),
-          orElse: () => WeatherError(onRefresh: () => _weatherListCubit.fetch()),
+          orElse: () => Center(child: WeatherError(onRefresh: () => _weatherListCubit.fetch())),
         );
       },
     );

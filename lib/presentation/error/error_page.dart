@@ -19,15 +19,15 @@ class WeatherError extends StatelessWidget {
           children: [
             const AnimationLottie(
               AnimationPaths.animError,
-              width: 180,
-              height: 180,
+              width: 160,
+              height: 160,
             ),
             const SizedBox(height: 24),
             Text(
               'Ouuuupps',
               style: headlineMediumStyle,
             ).paddingOnly(left: 24, right: 24),
-            const SizedBox(height: 24),
+            const SizedBox(height: 12),
             Text(
               "Une erreur est survenue!!!!",
               style: bodyMediumStyle,
@@ -49,7 +49,7 @@ class WeatherError extends StatelessWidget {
               child: const Center(
                 child: Text(
                   'Relancer',
-                  style: TextStyle(color: Colors.white, fontSize: 22.0),
+                  style: TextStyle(color: Colors.white, fontSize: 20.0),
                   textAlign: TextAlign.center,
                 ),
               ),

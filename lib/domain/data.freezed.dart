@@ -158,8 +158,8 @@ abstract class _WeatherData implements WeatherData {
 
 /// @nodoc
 mixin _$WeatherDatas {
-  WeatherData get symbols => throw _privateConstructorUsedError;
-  WeatherData get temperatures => throw _privateConstructorUsedError;
+  List<WeatherDate> get symbols => throw _privateConstructorUsedError;
+  List<WeatherDate> get temperatures => throw _privateConstructorUsedError;
 
   @JsonKey(ignore: true)
   $WeatherDatasCopyWith<WeatherDatas> get copyWith =>
@@ -171,10 +171,7 @@ abstract class $WeatherDatasCopyWith<$Res> {
   factory $WeatherDatasCopyWith(
           WeatherDatas value, $Res Function(WeatherDatas) then) =
       _$WeatherDatasCopyWithImpl<$Res>;
-  $Res call({WeatherData symbols, WeatherData temperatures});
-
-  $WeatherDataCopyWith<$Res> get symbols;
-  $WeatherDataCopyWith<$Res> get temperatures;
+  $Res call({List<WeatherDate> symbols, List<WeatherDate> temperatures});
 }
 
 /// @nodoc
@@ -194,26 +191,12 @@ class _$WeatherDatasCopyWithImpl<$Res> implements $WeatherDatasCopyWith<$Res> {
       symbols: symbols == freezed
           ? _value.symbols
           : symbols // ignore: cast_nullable_to_non_nullable
-              as WeatherData,
+              as List<WeatherDate>,
       temperatures: temperatures == freezed
           ? _value.temperatures
           : temperatures // ignore: cast_nullable_to_non_nullable
-              as WeatherData,
+              as List<WeatherDate>,
     ));
-  }
-
-  @override
-  $WeatherDataCopyWith<$Res> get symbols {
-    return $WeatherDataCopyWith<$Res>(_value.symbols, (value) {
-      return _then(_value.copyWith(symbols: value));
-    });
-  }
-
-  @override
-  $WeatherDataCopyWith<$Res> get temperatures {
-    return $WeatherDataCopyWith<$Res>(_value.temperatures, (value) {
-      return _then(_value.copyWith(temperatures: value));
-    });
   }
 }
 
@@ -224,12 +207,7 @@ abstract class _$$_WeatherDatasCopyWith<$Res>
           _$_WeatherDatas value, $Res Function(_$_WeatherDatas) then) =
       __$$_WeatherDatasCopyWithImpl<$Res>;
   @override
-  $Res call({WeatherData symbols, WeatherData temperatures});
-
-  @override
-  $WeatherDataCopyWith<$Res> get symbols;
-  @override
-  $WeatherDataCopyWith<$Res> get temperatures;
+  $Res call({List<WeatherDate> symbols, List<WeatherDate> temperatures});
 }
 
 /// @nodoc
@@ -250,13 +228,13 @@ class __$$_WeatherDatasCopyWithImpl<$Res>
   }) {
     return _then(_$_WeatherDatas(
       symbols: symbols == freezed
-          ? _value.symbols
+          ? _value._symbols
           : symbols // ignore: cast_nullable_to_non_nullable
-              as WeatherData,
+              as List<WeatherDate>,
       temperatures: temperatures == freezed
-          ? _value.temperatures
+          ? _value._temperatures
           : temperatures // ignore: cast_nullable_to_non_nullable
-              as WeatherData,
+              as List<WeatherDate>,
     ));
   }
 }
@@ -264,12 +242,25 @@ class __$$_WeatherDatasCopyWithImpl<$Res>
 /// @nodoc
 
 class _$_WeatherDatas implements _WeatherDatas {
-  _$_WeatherDatas({required this.symbols, required this.temperatures});
+  _$_WeatherDatas(
+      {required final List<WeatherDate> symbols,
+      required final List<WeatherDate> temperatures})
+      : _symbols = symbols,
+        _temperatures = temperatures;
 
+  final List<WeatherDate> _symbols;
   @override
-  final WeatherData symbols;
+  List<WeatherDate> get symbols {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_symbols);
+  }
+
+  final List<WeatherDate> _temperatures;
   @override
-  final WeatherData temperatures;
+  List<WeatherDate> get temperatures {
+    // ignore: implicit_dynamic_type
+    return EqualUnmodifiableListView(_temperatures);
+  }
 
   @override
   String toString() {
@@ -281,16 +272,16 @@ class _$_WeatherDatas implements _WeatherDatas {
     return identical(this, other) ||
         (other.runtimeType == runtimeType &&
             other is _$_WeatherDatas &&
-            const DeepCollectionEquality().equals(other.symbols, symbols) &&
+            const DeepCollectionEquality().equals(other._symbols, _symbols) &&
             const DeepCollectionEquality()
-                .equals(other.temperatures, temperatures));
+                .equals(other._temperatures, _temperatures));
   }
 
   @override
   int get hashCode => Object.hash(
       runtimeType,
-      const DeepCollectionEquality().hash(symbols),
-      const DeepCollectionEquality().hash(temperatures));
+      const DeepCollectionEquality().hash(_symbols),
+      const DeepCollectionEquality().hash(_temperatures));
 
   @JsonKey(ignore: true)
   @override
@@ -300,13 +291,13 @@ class _$_WeatherDatas implements _WeatherDatas {
 
 abstract class _WeatherDatas implements WeatherDatas {
   factory _WeatherDatas(
-      {required final WeatherData symbols,
-      required final WeatherData temperatures}) = _$_WeatherDatas;
+      {required final List<WeatherDate> symbols,
+      required final List<WeatherDate> temperatures}) = _$_WeatherDatas;
 
   @override
-  WeatherData get symbols;
+  List<WeatherDate> get symbols;
   @override
-  WeatherData get temperatures;
+  List<WeatherDate> get temperatures;
   @override
   @JsonKey(ignore: true)
   _$$_WeatherDatasCopyWith<_$_WeatherDatas> get copyWith =>
