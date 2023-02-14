@@ -11,12 +11,10 @@ import 'package:weather_report/data/weather_list/source/position.dart';
 class WeatherListSource {
   final String baseUrl = 'https://api.meteomatics.com';
 
-  final criteria =
-      "${DateTime(2023, 2, 13, 0, 0, 0, 0, 0).toIso8601String()}Z--${DateTime(2023, 2, 17, 0, 0, 0, 0, 0).toIso8601String()}Z";
-
-  Future<WeatherListResponse> getValues(CacheStrategy cacheStrategy) async {
+  Future<WeatherListResponse> getValues(DateTime startDate, DateTime endDate, CacheStrategy cacheStrategy) async {
+    final filter = "${startDate.toIso8601String()}Z--${endDate.toIso8601String()}Z";
     final response = await DioClient().get(
-      '$baseUrl/2023-02-14T00:00:00Z--2023-02-20T00:00:00Z:PT1H/weather_symbol_24h:idx,t_2m:C/${Position.paris.toString()}/json',
+      '$baseUrl/$filter:PT1H/weather_symbol_24h:idx,t_2m:C/${Position.paris.toString()}/json',
       interceptors: [
         getIt<TokenInterceptor>(),
         DioCacheInterceptor(options: CacheOptionsManager.defaultOptions.withCustom(cache: cacheStrategy)),
@@ -26,9 +24,10 @@ class WeatherListSource {
     return WeatherListResponse.fromJson(response.data);
   }
 
-  Future<String> getDescriptions(CacheStrategy cacheStrategy) async {
+  Future<String> getDescriptions(DateTime startDate, DateTime endDate, CacheStrategy cacheStrategy) async {
+    final filter = "${startDate.toIso8601String()}Z--${endDate.toIso8601String()}Z";
     final response = await DioClient().get(
-      '$baseUrl/2023-02-14T00:00:00Z--2023-02-20T00:00:00Z:PT1H/weather_text_fr:str/${Position.paris.toString()}/csv',
+      '$baseUrl/$filter:PT1H/weather_text_fr:str/${Position.paris.toString()}/csv',
       interceptors: [
         getIt<TokenInterceptor>(),
         DioCacheInterceptor(options: CacheOptionsManager.defaultOptions.withCustom(cache: cacheStrategy)),

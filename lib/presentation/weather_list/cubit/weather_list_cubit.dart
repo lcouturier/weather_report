@@ -15,8 +15,9 @@ class WeatherListCubit extends Cubit<WeatherListState> {
   final WeatherListRepository _repository;
   WeatherListCubit(this._repository) : super(const WeatherListState.initial());
 
-  Future<List<WeatherItemDescription>> _getDescriptions(CacheStrategy cacheStrategy) async {
-    final descriptions = await _repository.getDescriptions(cacheStrategy);
+  Future<List<WeatherItemDescription>> _getDescriptions(
+      DateTime startDate, DateTime endDate, CacheStrategy cacheStrategy) async {
+    final descriptions = await _repository.getDescriptions(startDate, endDate, cacheStrategy);
     return const LineSplitter()
         .convert(descriptions)
         .skip(1)
@@ -25,8 +26,8 @@ class WeatherListCubit extends Cubit<WeatherListState> {
         .toList();
   }
 
-  Future<WeatherDatas> _getWeatherData(CacheStrategy cacheStrategy) async {
-    final items = await _repository.getValues(cacheStrategy);
+  Future<WeatherDatas> _getWeatherData(DateTime startDate, DateTime endDate, CacheStrategy cacheStrategy) async {
+    final items = await _repository.getValues(startDate, endDate, cacheStrategy);
     return WeatherDatas(
       symbols: items.firstWhere((e) => e.parameter == 'weather_symbol_24h:idx').coordinates.first.dates,
       temperatures: items.firstWhere((e) => e.parameter == 't_2m:C').coordinates.first.dates,
@@ -36,14 +37,15 @@ class WeatherListCubit extends Cubit<WeatherListState> {
   Future<void> fetch({CacheStrategy cacheStrategy = CacheStrategy.use}) async {
     emit(const WeatherListState.loading());
     try {
-      final startDate = DateTime.now();
-      final endDate = DateTime.now().add(5.days);
+      final currentDate = DateTime.now();
+      final startDate = DateTime(currentDate.year, currentDate.month, currentDate.day, 0, 0, 0);
+      final endDate = DateTime.now().add(4.days);
 
-      final descriptions = (await _getDescriptions(cacheStrategy))
+      final descriptions = (await _getDescriptions(startDate, endDate, cacheStrategy))
           .where((e) => ((e.date >= startDate) && (e.date <= endDate)))
           .where((e) => e.date.hour == startDate.hour);
 
-      final response = await _getWeatherData(cacheStrategy);
+      final response = await _getWeatherData(startDate, endDate, cacheStrategy);
 
       final symbols = response.symbols
           .where((e) => ((e.date >= startDate) && (e.date <= endDate)))

@@ -9,11 +9,11 @@ class WeatherListRepository {
 
   const WeatherListRepository(this._source);
 
-  Future<List<WeatherData>> getValues(CacheStrategy cacheStrategy) async {
-    return (await _source.getValues(cacheStrategy)).data.map((e) => e.toDomain()).toList();
+  Future<List<WeatherData>> getValues(DateTime startDate, DateTime endDate, CacheStrategy cacheStrategy) async {
+    return (await _source.getValues(startDate, endDate, cacheStrategy)).data.map((e) => e.toDomain()).toList();
   }
 
-  Future<String> getDescriptions(CacheStrategy cacheStrategy) async {
-    return _source.getDescriptions(cacheStrategy);
+  Future<String> getDescriptions(DateTime startDate, DateTime endDate, CacheStrategy cacheStrategy) async {
+    return _source.getDescriptions(startDate, endDate, cacheStrategy);
   }
 }
