@@ -28,16 +28,17 @@ class WeatherListCubit extends Cubit<WeatherListState> {
     return WeatherItem(
       date: l.date,
       temperature: l.maybeWhen(temperature: (date, value) => value, orElse: () => 0.0),
-      symbol: r.maybeWhen(symbol: (date, value) => value, orElse: () => WeatherSymbol.none),
+      symbol: r.maybeWhen(symbol: (date, value) => value, orElse: () => WeatherSymbol.unknown),
     );
   }
 
-  Future<void> fetch({CacheStrategy cacheStrategy = CacheStrategy.use}) async {
+  Future<void> fetch(
+      {DateTime? current, DateTime? start, DateTime? end, CacheStrategy cacheStrategy = CacheStrategy.use}) async {
     emit(const WeatherListState.loading());
     try {
-      final currentDate = DateTime.now();
-      final startDate = DateTime(currentDate.year, currentDate.month, currentDate.day, 0, 0, 0);
-      final endDate = DateTime.now().add(5.days);
+      final currentDate = current ?? DateTime.now();
+      final startDate = start ?? DateTime(currentDate.year, currentDate.month, currentDate.day, 0, 0, 0);
+      final endDate = end ?? DateTime.now().add(5.days);
 
       final descriptions = (await _getDescriptions(startDate, endDate, cacheStrategy))
           .where((e) => ((e.date >= startDate) && (e.date <= endDate)))

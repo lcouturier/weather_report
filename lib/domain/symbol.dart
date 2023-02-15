@@ -4,7 +4,7 @@ import 'package:weather_report/core/extensions.dart';
 import 'package:weather_report/core/themes/images_path.dart';
 
 enum WeatherSymbol {
-  none(0, ImagePaths.unknown),
+  unknown(0, ImagePaths.unknown),
   sunny(1, ImagePaths.sunny),
   lightClouds(2, ImagePaths.sunny_intervals),
   partlyCloudy(3, ImagePaths.white_cloud),
@@ -28,6 +28,6 @@ enum WeatherSymbol {
 
   static WeatherSymbol Function(int) fromOrdinal = _fromOrdinalCore.memoize();
   static WeatherSymbol _fromOrdinalCore(int value) {
-    return WeatherSymbol.values.firstWhere((e) => e.value == value, orElse: () => WeatherSymbol.none);
+    return WeatherSymbol.values.firstWhere((e) => e.value == value, orElse: () => WeatherSymbol.unknown);
   }
 }
